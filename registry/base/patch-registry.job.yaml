@@ -1,0 +1,24 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: patch-registry
+  annotations:
+    argocd.argoproj.io/hook: Sync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+spec:
+  template:
+    spec:
+      containers:
+      - name: patch-reg-spec
+        image: registry.redhat.io/openshift4/ose-cli:latest
+        command:
+            - /bin/bash
+            - -c
+            - |
+              oc patch configs.imageregistry.operator.openshift.io cluster --type merge --patch '{"spec":{"rolloutStrategy":"Recreate","replicas":1}}'
+              oc patch configs.imageregistry.operator.openshift.io cluster --type merge --patch '{"spec":{"managementState":"Managed"}}'
+              oc patch configs.imageregistry.operator.openshift.io cluster --type merge --patch '{"spec":{"storage":{"pvc":{"claim:":"image-registry-storage"}}}}'
+              oc patch configs.imageregistry.operator.openshift.io cluster --type merge --patch '{"spec":{"storage":{"managementState":"Managed"}}}'
+      restartPolicy: Never
+      serviceAccountName: cluster-image-registry-operator
+  backoffLimit: 0
