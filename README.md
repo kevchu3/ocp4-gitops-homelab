@@ -2,6 +2,7 @@
 
 This repository contains sample applications intended to be deployed via Red Hat OpenShift GitOps.
 
+* [clair](./quay/overlays/clair)
 * [oauth](./oauth)
 * [registry](./registry)
 
