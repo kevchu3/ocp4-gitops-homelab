@@ -5,3 +5,11 @@ This repository contains sample applications intended to be deployed via Red Hat
 * [oauth](./oauth)
 * [registry](./registry)
 
+### ArgoCD Cluster Admin Access
+
+To [enable full cluster admin access] on OpenShift, run the following command:
+```
+oc adm policy add-cluster-role-to-user cluster-admin -z openshift-gitops-argocd-application-controller -n openshift-gitops
+```
+
+[enable full cluster admin access]: https://argocd-operator.readthedocs.io/en/latest/install/openshift/#rbac

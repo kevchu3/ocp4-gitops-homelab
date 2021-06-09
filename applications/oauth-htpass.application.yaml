@@ -5,8 +5,9 @@ metadata:
   namespace: openshift-gitops
 spec:
   destination:
+    namespace: openshift-gitops
     server: https://kubernetes.default.svc
-  project: infra
+  project: default
   source:
     path: oauth/overlays/htpass
     repoURL: https://github.com/kevchu3/ocp4-gitops-homelab.git
