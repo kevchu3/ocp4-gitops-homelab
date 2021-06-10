@@ -1,0 +1,23 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: patch-project
+  namespace: openshift-gitops
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+spec:
+  template:
+    spec:
+      containers:
+      - name: patch-project-spec
+        image: registry.redhat.io/openshift4/ose-cli:latest
+        command:
+            - /bin/bash
+            - -c
+            - |
+              oc patch project.config.openshift.io/cluster --type merge --patch '{"spec":{"projectRequestTemplate":{"name":"multitenant-quotas-project-template"}}}'
+      restartPolicy: Never
+      serviceAccountName: openshift-gitops-argocd-application-controller
+  backoffLimit: 0
+
