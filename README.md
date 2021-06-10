@@ -2,8 +2,9 @@
 
 This repository contains sample applications intended to be deployed via Red Hat OpenShift GitOps.
 
-* [clair](./quay/overlays/clair)
+* [Container Security Operator (Clair)](./quay/overlays/clair)
 * [oauth](./oauth)
+* [project template](./project-template)
 * [registry](./registry)
 
 ### ArgoCD Cluster Admin Access
