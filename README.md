@@ -3,6 +3,7 @@
 This repository contains sample applications intended to be deployed via Red Hat OpenShift GitOps.
 
 * [Container Security Operator (Clair)](./quay/overlays/clair)
+* [custom Grafana](./custom-grafana)
 * [oauth](./oauth)
 * [project template](./project-template)
 * [registry](./registry)

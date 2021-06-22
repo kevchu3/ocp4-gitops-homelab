@@ -1,0 +1,25 @@
+apiVersion: integreatly.org/v1alpha1
+kind: Grafana
+metadata:
+  name: my-grafana
+  namespace: my-grafana
+spec:
+  config:
+    auth:
+      disable_signout_menu: true
+    auth.anonymous:
+      enabled: true
+    log:
+      level: warn
+      mode: console
+    security:
+      admin_password: redhat
+      admin_user: admin
+  ingress:
+    enabled: true
+  dashboardLabelSelector:
+    - matchExpressions:
+        - key: app
+          operator: In
+          values:
+            - grafana
