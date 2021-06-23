@@ -3,8 +3,6 @@ kind: GrafanaDataSource
 metadata:
   name: prometheus-grafanadatasource
   namespace: my-grafana
-  annotations:
-    argocd.argoproj.io/hook: Skip
 spec:
   datasources:
     - access: proxy
