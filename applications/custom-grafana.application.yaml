@@ -9,7 +9,7 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: custom-grafana/base
+    path: custom-grafana/overlays/dashboards
     repoURL: https://github.com/kevchu3/ocp4-gitops-homelab.git
     targetRevision: HEAD
   syncPolicy:
