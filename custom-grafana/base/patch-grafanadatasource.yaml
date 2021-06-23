@@ -1,0 +1,44 @@
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDataSource
+metadata:
+  name: prometheus-grafanadatasource
+  namespace: my-grafana
+spec:
+  datasources:
+    - access: proxy
+      editable: true
+      isDefault: true
+      jsonData:
+        httpHeaderName1: 'Authorization'
+        timeInterval: 5s
+        tlsSkipVerify: true
+      name: Prometheus
+      secureJsonData:
+        httpHeaderValue1: 'Bearer ${BEARER_TOKEN}'
+      type: prometheus
+      url: 'https://thanos-querier.openshift-monitoring.svc.cluster.local:9091'
+  name: prometheus-grafanadatasource.yaml
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: patch-grafanadatasource
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+spec:
+  template:
+    spec:
+      containers:
+      - name: patch-grafanadatasource
+        image: registry.redhat.io/openshift4/ose-cli:latest
+        command:
+            - /bin/bash
+            - -c
+            - |
+              set -e
+              NEW_TOKEN=`oc serviceaccounts get-token grafana-serviceaccount -n my-grafana`
+              oc patch grafanadatasource prometheus-grafanadatasource -n my-grafana --type='json' -p='[{"op":"add","path":"/spec/datasources/0/secureJsonData/httpHeaderValue1","value":"Bearer '${NEW_TOKEN}'"}]'
+      restartPolicy: Never
+      serviceAccountName: grafana-operator
+      terminationGracePeriodSeconds: 60
