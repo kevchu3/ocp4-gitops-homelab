@@ -3,9 +3,6 @@ kind: Kustomization
 
 namespace: my-grafana
 
-commonAnnotations:
-    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
-
 # Deploy custom Grafana from OperatorHub based on this blog:
 # https://www.redhat.com/en/blog/custom-grafana-dashboards-red-hat-openshift-container-platform-4
 
