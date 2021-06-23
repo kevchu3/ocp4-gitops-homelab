@@ -3,7 +3,7 @@ kind: ClusterRoleBinding
 metadata:
   name: grafana-serviceaccount
   annotations:
-    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook: Sync
     argocd.argoproj.io/hook-delete-policy: HookSucceeded
 roleRef:
   apiGroup: rbac.authorization.k8s.io
