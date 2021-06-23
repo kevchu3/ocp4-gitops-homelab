@@ -11,5 +11,4 @@ resources:
   - subscription.yaml
   - grafana.yaml
   - cluster-monitoring-view.clusterrole.yaml
-  - grafanadatasource.yaml
-  - patch-grafanadatasource.job.yaml
+  - patch-grafanadatasource.yaml
