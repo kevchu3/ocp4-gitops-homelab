@@ -40,5 +40,5 @@ spec:
               NEW_TOKEN=`oc serviceaccounts get-token grafana-serviceaccount -n my-grafana`
               oc patch grafanadatasource prometheus-grafanadatasource -n my-grafana --type='json' -p='[{"op":"add","path":"/spec/datasources/0/secureJsonData/httpHeaderValue1","value":"Bearer '${NEW_TOKEN}'"}]'
       restartPolicy: Never
-      serviceAccountName: grafana-operator
+      serviceAccountName: default
       terminationGracePeriodSeconds: 60
