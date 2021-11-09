@@ -4,12 +4,12 @@ metadata:
   name: grafana-operator
   namespace: my-grafana
 spec:
-  channel: alpha
+  channel: v4
   installPlanApproval: Automatic
   name: grafana-operator
   source: community-operators
   sourceNamespace: openshift-marketplace
-  startingCSV: grafana-operator.v3.10.1
+  startingCSV: grafana-operator.v4.0.1
 ---
 apiVersion: operators.coreos.com/v1
 kind: OperatorGroup
