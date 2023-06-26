@@ -3,4 +3,5 @@ kind: Namespace
 metadata:
   annotations:
     openshift.io/description: Custom Grafana
+    argocd.argoproj.io/sync-wave: "1"
   name: my-grafana

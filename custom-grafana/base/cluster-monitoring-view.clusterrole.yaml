@@ -1,12 +1,16 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
   name: grafana-serviceaccount
   namespace: my-grafana
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
   name: edit
   namespace: my-grafana
 roleRef:
@@ -21,6 +25,8 @@ subjects:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
   name: grafana-serviceaccount
   annotations:
     argocd.argoproj.io/hook: Sync
