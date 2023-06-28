@@ -4,6 +4,7 @@ This repository contains sample applications intended to be deployed via Red Hat
 
 * [Container Security Operator (Clair)](./quay/overlays/clair)
 * [custom Grafana](./custom-grafana)
+* [machineconfig](./machineconfig)
 * [oauth](./oauth)
 * [project template](./project-template)
 * [registry](./registry)

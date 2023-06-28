@@ -1,0 +1,9 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  # https://docs.openshift.com/container-platform/4.13/rest_api/editing-kubelet-log-level-verbosity.html
+  - 99-master-kubelet-loglevel.yaml
+  - 99-worker-kubelet-loglevel.yaml
+  # https://docs.openshift.com/container-platform/4.13/nodes/nodes/nodes-nodes-garbage-collection.html
+  - worker-gc-kubeletconfig.yaml
