@@ -8,5 +8,5 @@ resources:
   - subscription.yaml
   - grafana.yaml
   - secret.yaml
-  - cluster-monitoring-view.clusterrole.yaml
-  - grafanadatasource.yaml
+  - rolebindings.yaml
+  - patch-grafanadatasource.yaml
