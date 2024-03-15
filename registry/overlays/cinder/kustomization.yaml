@@ -3,8 +3,6 @@ kind: Kustomization
 
 namespace: openshift-image-registry
 
-bases:
-- ../../base
-
 resources:
+- ../../base
 - image-registry-storage.pvc.yaml

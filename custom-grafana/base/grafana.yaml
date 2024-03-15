@@ -1,27 +1,29 @@
-apiVersion: integreatly.org/v1alpha1
 kind: Grafana
+apiVersion: grafana.integreatly.org/v1beta1
 metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "3"
-  name: my-grafana
+  labels:
+    dashboards: my-grafana
+  name: grafana
   namespace: my-grafana
 spec:
   config:
     auth:
-      disable_signout_menu: true
-    auth.anonymous:
-      enabled: true
+      disable_login_form: 'false'
     log:
-      level: warn
       mode: console
     security:
       admin_password: redhat
       admin_user: admin
-  ingress:
-    enabled: true
-  dashboardLabelSelector:
-    - matchExpressions:
-        - key: app
-          operator: In
-          values:
-            - grafana
+  route:
+    spec:
+      port:
+        targetPort: grafana
+      tls:
+        termination: edge
+      to:
+        kind: Service
+        name: grafana-service
+        weight: 100
+      wildcardPolicy: None

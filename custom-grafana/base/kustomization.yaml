@@ -1,14 +1,12 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-namespace: my-grafana
-
 # Deploy custom Grafana from OperatorHub based on this blog:
 # https://www.redhat.com/en/blog/custom-grafana-dashboards-red-hat-openshift-container-platform-4
 
 resources:
-  - namespace.yaml
   - subscription.yaml
   - grafana.yaml
-  - cluster-monitoring-view.clusterrole.yaml
+  - secret.yaml
+  - rolebindings.yaml
   - patch-grafanadatasource.yaml
