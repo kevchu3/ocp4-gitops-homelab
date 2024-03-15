@@ -1,25 +1,32 @@
-apiVersion: integreatly.org/v1alpha1
-kind: GrafanaDataSource
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDatasource
 metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "3"
   name: prometheus-grafanadatasource
-  namespace: my-grafana
 spec:
-  datasources:
-    - access: proxy
-      editable: true
-      isDefault: true
-      jsonData:
-        httpHeaderName1: 'Authorization'
-        timeInterval: 5s
-        tlsSkipVerify: true
-      name: Prometheus
-      secureJsonData:
-        httpHeaderValue1: 'Bearer ${BEARER_TOKEN}'
-      type: prometheus
-      url: 'https://thanos-querier.openshift-monitoring.svc.cluster.local:9091'
-  name: prometheus-grafanadatasource.yaml
+  instanceSelector:
+    matchLabels:
+      dashboards: my-grafana
+  valuesFrom:
+    - targetPath: "secureJsonData.httpHeaderValue1"
+      valueFrom:
+        secretKeyRef:
+          name: "grafana-credentials"
+          key: "token"
+  datasource:
+    access: proxy
+    editable: true
+    isDefault: true
+    jsonData:
+      httpHeaderName1: 'Authorization'
+      timeInterval: 5s
+      tlsSkipVerify: true
+    name: Prometheus
+    secureJsonData:
+      httpHeaderValue1: 'Bearer ${token}'
+    type: prometheus
+    url: 'https://thanos-querier.openshift-monitoring.svc.cluster.local:9091'
 ---
 apiVersion: batch/v1
 kind: Job
@@ -40,8 +47,9 @@ spec:
             - -c
             - |
               set -e
-              NEW_TOKEN=`oc create token grafana-serviceaccount --duration=8760h -n my-grafana`
-              oc patch grafanadatasource prometheus-grafanadatasource -n my-grafana --type='json' -p='[{"op":"add","path":"/spec/datasources/0/secureJsonData/httpHeaderValue1","value":"Bearer '${NEW_TOKEN}'"}]'
+              NEW_TOKEN=`oc create token grafana-sa --duration=876000h -n my-grafana`
+              oc set data secret/grafana-credentials token=`echo ${NEW_TOKEN}`
+              oc delete pod -l app=grafana
       restartPolicy: Never
-      serviceAccountName: grafana-serviceaccount
+      serviceAccountName: grafana-sa
       terminationGracePeriodSeconds: 60
