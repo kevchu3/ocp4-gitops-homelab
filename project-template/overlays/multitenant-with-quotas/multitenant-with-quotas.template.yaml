@@ -33,16 +33,7 @@ objects:
     kind: User
     name: ${PROJECT_ADMIN_USER}
 # Set multitenant network policy
-# https://docs.openshift.com/container-platform/latest/networking/network_policy/default-network-policy.html
-- apiVersion: networking.k8s.io/v1
-  kind: NetworkPolicy
-  metadata:
-    name: allow-from-same-namespace
-  spec:
-    ingress:
-    - from:
-      - podSelector: {}
-    podSelector: null
+# https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html/network_security/network-policy#multitenant-network-policy
 - apiVersion: networking.k8s.io/v1
   kind: NetworkPolicy
   metadata:
@@ -52,7 +43,7 @@ objects:
     - from:
       - namespaceSelector:
           matchLabels:
-            network.openshift.io/policy-group: ingress
+            policy-group.network.openshift.io/ingress: ""
     podSelector: {}
     policyTypes:
     - Ingress
@@ -69,8 +60,39 @@ objects:
     podSelector: {}
     policyTypes:
     - Ingress
+- apiVersion: networking.k8s.io/v1
+  kind: NetworkPolicy
+  metadata:
+    name: allow-same-namespace
+  spec:
+    podSelector:
+    ingress:
+    - from:
+      - podSelector: {}
+- apiVersion: networking.k8s.io/v1
+  kind: NetworkPolicy
+  metadata:
+    name: allow-from-kube-apiserver-operator
+  spec:
+    ingress:
+    - from:
+      - namespaceSelector:
+          matchLabels:
+            kubernetes.io/metadata.name: openshift-kube-apiserver-operator
+        podSelector:
+          matchLabels:
+            app: kube-apiserver-operator
+    policyTypes:
+    - Ingress
+- apiVersion: networking.k8s.io/v1
+  kind: NetworkPolicy
+  metadata:
+    name: deny-by-default
+  spec:
+    podSelector: {}
+    ingress: []
 # Set resource quotas per project
-# https://docs.openshift.com/container-platform/latest/applications/quotas/quotas-setting-per-project.html
+# https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html/building_applications/quotas#quotas-setting-per-project
 - apiVersion: v1
   kind: ResourceQuota
   metadata:
@@ -81,7 +103,7 @@ objects:
       requests.memory: 24Gi
       limits.memory: 24Gi
 # Set limit range so that pods fit within quota
-# https://docs.openshift.com/container-platform/latest/nodes/clusters/nodes-cluster-limit-ranges.html
+# https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html/nodes/working-with-clusters#nodes-cluster-limit-ranges
 - apiVersion: v1
   kind: "LimitRange"
   metadata:
