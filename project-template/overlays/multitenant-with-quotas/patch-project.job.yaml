@@ -17,7 +17,17 @@ spec:
             - -c
             - |
               oc patch project.config.openshift.io/cluster --type merge --patch '{"spec":{"projectRequestTemplate":{"name":"multitenant-quotas-project-template"}}}'
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          runAsNonRoot: true
+          seccompProfile:
+            type: RuntimeDefault
       restartPolicy: Never
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
       serviceAccountName: openshift-gitops-argocd-application-controller
   backoffLimit: 0
-
