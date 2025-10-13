@@ -2,5 +2,6 @@ kind: Kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 
 resources:
-  - multitenant-with-quotas.template.yaml
+  - adminnetworkpolicy.yaml
+  - multitenant-anp-with-quotas.template.yaml
   - patch-project.job.yaml
