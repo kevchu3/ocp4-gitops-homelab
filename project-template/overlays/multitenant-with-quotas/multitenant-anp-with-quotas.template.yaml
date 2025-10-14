@@ -32,16 +32,21 @@ objects:
   - apiGroup: rbac.authorization.k8s.io
     kind: User
     name: ${PROJECT_ADMIN_USER}
-# Must also apply multitenant AdminNetworkPolicy because this NetworkPolicy denies all selected pods outside of this namespace
+# Apply multitenant isolation with ingress
 - apiVersion: networking.k8s.io/v1
   kind: NetworkPolicy
   metadata:
-    name: allow-same-namespace
+    name: allow-same-namespace-with-ingress
   spec:
-    podSelector: {}
     ingress:
-    - from:
-      - podSelector: {}
+      - from:
+          - podSelector: {}
+          - namespaceSelector:
+              matchLabels:
+                network.openshift.io/policy-group: ingress
+    podSelector: {}
+    policyTypes:
+    - Ingress
 # Set resource quotas per project
 # https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html/building_applications/quotas#quotas-setting-per-project
 - apiVersion: v1

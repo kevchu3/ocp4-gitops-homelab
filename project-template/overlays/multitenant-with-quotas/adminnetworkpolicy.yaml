@@ -1,20 +1,13 @@
 apiVersion: policy.networking.k8s.io/v1alpha1
 kind: AdminNetworkPolicy
 metadata:
-  name: multitenant-networkpolicy
+  name: multitenant-adminnetworkpolicy
 spec:
   priority: 9
   subject:
     namespaces: {} # Use the empty selector with caution because it also selects OpenShift namespaces as well.
   ingress:
-# Set multitenant network policy
 # https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html/network_security/network-policy#multitenant-network-policy
-  - name: "allow-from-openshift-ingress"
-    action: "Allow"
-    from:
-    - namespaces:
-        matchLabels:
-          policy-group.network.openshift.io/ingress: ""
   - name: "allow-from-openshift-monitoring"
     action: "Allow"
     from:
@@ -32,7 +25,7 @@ spec:
         podSelector:
           matchLabels:
             app: kube-apiserver-operator
-# https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html/network_security/network-policy#multitenant-network-policy
+# https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html/network_security/network-policy#nw-networkpolicy-allow-from-hostnetwork_about-network-policy
   - name: "allow-from-hostnetwork"
     action: "Allow"
     from:
