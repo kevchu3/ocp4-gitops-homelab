@@ -6,7 +6,9 @@ kind: Kustomization
 
 resources:
   - subscription.yaml
+  - operatorgroup.yaml
   - grafana.yaml
   - secret.yaml
   - rolebindings.yaml
-  - patch-grafanadatasource.yaml
+  - grafanadatasource.yaml
+  - patch-job.yaml

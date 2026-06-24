@@ -2,7 +2,8 @@ kind: Grafana
 apiVersion: grafana.integreatly.org/v1beta1
 metadata:
   annotations:
-    argocd.argoproj.io/sync-wave: "2"
+    argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
   labels:
     dashboards: my-grafana
   name: grafana
